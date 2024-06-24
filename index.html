@@ -7,68 +7,93 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Encabezado -->
+    <header class="bg-blue-700 text-white py-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <img src="logoFShama.png" alt="Logo Ferretería Shama" class="w-32 h-auto">
+            <h1 class="text-3xl font-bold">Cotizador Online</h1>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container mx-auto p-6">
+        <section class="bg-white p-8 rounded shadow-md mb-6">
+            <form id="productForm">
+                <fieldset class="mb-4 p-4 border border-gray-200 rounded">
+                    <legend class="text-lg font-medium text-gray-700">Información del Cliente</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                        <div class="col-span-3">
+                            <label for="cliente" class="block text-sm font-medium text-gray-700">Cliente:</label>
+                            <input type="text" id="cliente" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Nombre del cliente" required>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-4 p-4 border border-gray-200 rounded">
+                    <legend class="text-lg font-medium text-gray-700">Producto</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                        <div>
+                            <label for="cantidad" class="block text-sm font-medium text-gray-700">Cantidad:</label>
+                            <input type="number" id="cantidad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="0" required>
+                        </div>
+                        <div>
+                            <label for="producto" class="block text-sm font-medium text-gray-700">Producto:</label>
+                            <input type="text" id="producto" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Descripción del producto" required>
+                        </div>
+                        <div>
+                            <label for="precio" class="block text-sm font-medium text-gray-700">Precio unitario:</label>
+                            <input type="text" id="precio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Q0.00 GTQ" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded mt-4 flex items-center hover:bg-blue-700">
+                        <span class="material-icons">add</span> Agregar producto
+                    </button>
+                </fieldset>
+            </form>
+        </section>
+
+        <!-- Tabla de Productos -->
+        <section class="bg-white p-8 rounded shadow-md">
+            <h2 class="text-xl font-bold mb-4">Productos Agregados</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200" id="productTable">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio unitario</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                            <th class="px-6 py-3"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Productos se agregarán aquí -->
+                    </tbody>
+                    <tfoot class="bg-gray-50">
+                        <tr>
+                            <td colspan="3" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total:</td>
+                            <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" id="total">Q0.00 GTQ</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+
+        <!-- Botón Generar PDF -->
+        <div class="flex justify-end mt-6">
+            <button id="generatePDF" class="bg-green-500 text-white py-2 px-4 rounded flex items-center hover:bg-green-700">
+                <span class="material-icons">picture_as_pdf</span> Generar Cotización PDF
+            </button>
+        </div>
+    </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/decimal.js/decimal.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body class="bg-gray-100 p-6">
-    <div class="container mx-auto bg-white p-8 rounded shadow-md">
-        <div class="flex justify-between items-center mb-4">
-            <img src="logoFShama.png" alt="Logo Ferretería Shama" class="w-32 h-auto">
-            <h1 class="text-2xl font-bold">Crear cotización</h1>
-        </div>
-        <form id="productForm">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div class="col-span-3">
-                    <label for="cliente" class="block text-sm font-medium text-gray-700">Cliente:</label>
-                    <input type="text" id="cliente" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                    <label for="cantidad" class="block text-sm font-medium text-gray-700">Cantidad:</label>
-                    <input type="number" id="cantidad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
-                <div>
-                    <label for="producto" class="block text-sm font-medium text-gray-700">Producto:</label>
-                    <input type="text" id="producto" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
-                <div>
-                    <label for="precio" class="block text-sm font-medium text-gray-700">Precio unitario:</label>
-                    <input type="text" id="precio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded flex items-center">
-                <span class="material-icons">add</span> Agregar producto
-            </button>
-        </form>
-        
-        <table class="min-w-full divide-y divide-gray-200 mt-6" id="productTable">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio unitario</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
-                    <th class="px-6 py-3"></th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-            </tbody>
-            <tfoot class="bg-gray-50">
-                <tr>
-                    <td colspan="3" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total:</td>
-                    <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" id="total">Q0.00 GTQ</td>
-                </tr>
-            </tfoot>
-        </table>
-        
-        <button id="generatePDF" class="bg-green-500 text-white py-2 px-4 rounded mt-6 flex items-center">
-            <span class="material-icons">picture_as_pdf</span> Generar Cotización PDF
-        </button>
-    </div>
     <script src="app.js"></script>
     <script src="pdf.js"></script>
 </body>
